@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+.env
+
+# Node / Next / Expo
+node_modules/
+.next/
+out/
+.expo/
+dist/
+web/.env.local
+mobile/.env
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+*.log
