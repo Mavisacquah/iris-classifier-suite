@@ -7,22 +7,22 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from .ml_service import service
+from .ml_service import service, SPECIMEN_DETAILS
 
 app = FastAPI(
     title="Iris Classifier API",
-    description="Four scikit-learn models, reproducible evaluation metrics, and Iris predictions.",
+    description="Four scikit-learn models, reproducible evaluation metrics, and Iris predictions with specimen details.",
     version="1.0.0",
 )
 
 origins = os.getenv(
     "CORS_ORIGINS",
-    "http://localhost:3000,http://127.0.0.1:3000,http://localhost:19006,exp://localhost:8081",
+    "*",
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origin.strip() for origin in origins.split(",") if origin.strip()],
-    allow_credentials=True,
+    allow_origins=["*"] if origins == "*" else [origin.strip() for origin in origins.split(",") if origin.strip()],
+    allow_credentials=False if origins == "*" else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -47,6 +47,11 @@ def health() -> dict:
 @app.get("/dataset/summary")
 def dataset_summary() -> dict:
     return service.dataset_summary()
+
+
+@app.get("/specimens")
+def specimens() -> dict:
+    return SPECIMEN_DETAILS
 
 
 @app.get("/models/metrics")

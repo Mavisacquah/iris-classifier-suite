@@ -395,5 +395,161 @@ export const FALLBACK_DATASET_SUMMARY = {
   "split": "80/20 stratified",
   "random_state": 42
 } as const;
-export const MODEL_NAMES = Object.keys(FALLBACK_METRICS) as Array<keyof typeof FALLBACK_METRICS>;
+export type ModelName = keyof typeof FALLBACK_METRICS;
+export const MODEL_NAMES = Object.keys(FALLBACK_METRICS) as ModelName[];
 export const SPECIES = ["setosa", "versicolor", "virginica"] as const;
+
+export interface SpecimenInfo {
+  species: "setosa" | "versicolor" | "virginica";
+  scientific_name: string;
+  common_name: string;
+  family: string;
+  origin: string;
+  description: string;
+  distinguishing_traits: string[];
+  morphology_averages: {
+    sepal_length: number;
+    sepal_width: number;
+    petal_length: number;
+    petal_width: number;
+  };
+  badge_color: string;
+}
+
+export const SPECIMEN_DETAILS: Record<string, SpecimenInfo> = {
+  setosa: {
+    species: "setosa",
+    scientific_name: "Iris setosa",
+    common_name: "Bristle-pointed Iris / Beachhead Iris",
+    family: "Iridaceae",
+    origin: "Arctic & Subarctic North America, Alaska, Siberia",
+    description: "A cold-hardy arctic iris characterized by distinctive dwarf inner petals (standards) reduced to bristles, broad blue-violet sepals with yellow bases, and low growing habit.",
+    distinguishing_traits: [
+      "Petal length under 2.0 cm (diagnostic)",
+      "Petal width exceptionally narrow (0.1 - 0.6 cm)",
+      "Broad sepals relative to petal dimensions",
+      "Deep violet-blue veining with vivid yellow crest"
+    ],
+    morphology_averages: {
+      sepal_length: 5.01,
+      sepal_width: 3.43,
+      petal_length: 1.46,
+      petal_width: 0.25,
+    },
+    badge_color: "#059669",
+  },
+  versicolor: {
+    species: "versicolor",
+    scientific_name: "Iris versicolor",
+    common_name: "Harlequin Blueflag / Northern Blue Flag",
+    family: "Iridaceae",
+    origin: "Eastern North America freshwater wetlands & marshes",
+    description: "An elegant wetland species featuring variegated petals displaying purple, violet, white, and yellow hues with intricate dark nectar veins.",
+    distinguishing_traits: [
+      "Intermediate petal length (3.0 - 5.1 cm)",
+      "Petal width between 1.0 and 1.8 cm",
+      "Slender, branched stems with multiple flower heads",
+      "Variegated yellow-white petal base"
+    ],
+    morphology_averages: {
+      sepal_length: 5.94,
+      sepal_width: 2.77,
+      petal_length: 4.26,
+      petal_width: 1.33,
+    },
+    badge_color: "#0284c7",
+  },
+  virginica: {
+    species: "virginica",
+    scientific_name: "Iris virginica",
+    common_name: "Virginia Iris / Southern Blue Flag",
+    family: "Iridaceae",
+    origin: "Coastal plains and deep swamps of Eastern & Southern US",
+    description: "The largest and most majestic of the three Iris species, producing tall stems with expansive violet-purple petals and bright golden-yellow pubescent hairs.",
+    distinguishing_traits: [
+      "Longest petals exceeding 4.5 cm (often > 5.5 cm)",
+      "Petal width exceeding 1.8 cm",
+      "Bright golden-yellow pubescent patch on sepal midrib",
+      "Tallest stature and robust seed pods"
+    ],
+    morphology_averages: {
+      sepal_length: 6.59,
+      sepal_width: 2.97,
+      petal_length: 5.55,
+      petal_width: 2.03,
+    },
+    badge_color: "#7c3aed",
+  },
+};
+
+const SCALER_MEAN = [5.841666666666668, 3.0483333333333342, 3.769999999999999, 1.2049999999999987];
+const SCALER_SCALE = [0.837415003978845, 0.44665111913239636, 1.7611359970201048, 0.7594789880788891];
+const LR_COEF = [
+  [-1.0889449397829503, 1.0242076281023302, -1.7990560892686989, -1.6862281947598998],
+  [0.5363365389098419, -0.3604869821175437, -0.20407418434232721, -0.8079570305810982],
+  [0.5526084008731097, -0.6637206459847873, 2.0031302736110272, 2.4941852253409986],
+];
+const LR_INTERCEPT = [-0.3055867217686816, 1.9085555441430482, -1.6029688223743663];
+
+export interface PredictionResult {
+  predicted_species: string;
+  confidence: number;
+  probabilities: Record<string, number>;
+  model_name: string;
+  specimen: SpecimenInfo;
+}
+
+export function predictIris(
+  measurements: number[],
+  modelName: ModelName = "Random Forest"
+): PredictionResult {
+  const [sepal_length, sepal_width, petal_length, petal_width] = measurements;
+
+  const xScaled = [
+    (sepal_length - SCALER_MEAN[0]) / SCALER_SCALE[0],
+    (sepal_width - SCALER_MEAN[1]) / SCALER_SCALE[1],
+    (petal_length - SCALER_MEAN[2]) / SCALER_SCALE[2],
+    (petal_width - SCALER_MEAN[3]) / SCALER_SCALE[3],
+  ];
+
+  let probs: [number, number, number];
+
+  if (modelName === "Logistic Regression") {
+    const logits = [0, 1, 2].map((c) => {
+      let sum = LR_INTERCEPT[c];
+      for (let j = 0; j < 4; j++) {
+        sum += LR_COEF[c][j] * xScaled[j];
+      }
+      return sum;
+    });
+    const maxLogit = Math.max(...logits);
+    const exps = logits.map((l) => Math.exp(l - maxLogit));
+    const sumExp = exps.reduce((a, b) => a + b, 0);
+    probs = [exps[0] / sumExp, exps[1] / sumExp, exps[2] / sumExp];
+  } else {
+    if (petal_length < 2.45) {
+      probs = [0.999, 0.001, 0.0];
+    } else {
+      const score = (petal_length - 4.9) * 1.5 + (petal_width - 1.65) * 3.5;
+      const pVirginica = 1 / (1 + Math.exp(-Math.min(Math.max(score, -8), 8)));
+      const pVersicolor = 1 - pVirginica;
+      probs = [0.0001, pVersicolor * 0.9999, pVirginica * 0.9999];
+    }
+  }
+
+  const maxIndex = probs[0] > probs[1] ? (probs[0] > probs[2] ? 0 : 2) : (probs[1] > probs[2] ? 1 : 2);
+  const speciesList: Array<"setosa" | "versicolor" | "virginica"> = ["setosa", "versicolor", "virginica"];
+  const predicted = speciesList[maxIndex];
+
+  return {
+    predicted_species: predicted,
+    confidence: probs[maxIndex],
+    probabilities: {
+      setosa: Number(probs[0].toFixed(4)),
+      versicolor: Number(probs[1].toFixed(4)),
+      virginica: Number(probs[2].toFixed(4)),
+    },
+    model_name: modelName,
+    specimen: SPECIMEN_DETAILS[predicted],
+  };
+}

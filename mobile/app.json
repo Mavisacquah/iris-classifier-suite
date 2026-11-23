@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Iris Lab",
+    "slug": "iris-classifier-suite",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#2e1065"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mavisacquah.irisclassifier"
+    },
+    "android": {
+      "package": "com.mavisacquah.irisclassifier"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

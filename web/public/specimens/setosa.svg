@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgSetosa" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#047857" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="petalSetosa" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="60%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <linearGradient id="fallSetosa" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a5b4fc"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#3730a3"/>
+    </linearGradient>
+    <linearGradient id="crestSetosa" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#166534"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle / Plate -->
+  <circle cx="200" cy="200" r="185" fill="url(#bgSetosa)" stroke="#10b981" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Stem & Leaves -->
+  <path d="M200 360 C198 300 202 240 200 200" stroke="url(#stemGrad)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M198 290 C170 270 145 220 140 180 C155 210 180 250 198 265" fill="#15803d" opacity="0.85"/>
+  <path d="M202 320 C225 300 255 260 260 210 C245 240 220 280 202 295" fill="#166534" opacity="0.85"/>
+
+  <!-- Outer Falls (Broad Sepals - Characteristic of Setosa) -->
+  <path d="M195 210 C150 220 90 250 80 290 C100 300 140 270 185 225 Z" fill="url(#fallSetosa)" opacity="0.95"/>
+  <path d="M205 210 C250 220 310 250 320 290 C300 300 260 270 215 225 Z" fill="url(#fallSetosa)" opacity="0.95"/>
+  <path d="M200 215 C170 260 160 310 200 340 C240 310 230 260 200 215 Z" fill="url(#fallSetosa)"/>
+
+  <!-- Distinctive Yellow Crest on Falls -->
+  <path d="M200 230 C190 260 188 285 200 305 C212 285 210 260 200 230 Z" fill="url(#crestSetosa)"/>
+  <path d="M185 225 C155 245 130 265 115 275 C130 270 155 255 185 235 Z" fill="url(#crestSetosa)" opacity="0.9"/>
+  <path d="M215 225 C245 245 270 265 285 275 C270 270 245 255 215 235 Z" fill="url(#crestSetosa)" opacity="0.9"/>
+
+  <!-- Bristle / Reduced Standards (Dwarf Petals < 2cm) -->
+  <path d="M197 195 C190 160 192 130 200 115 C208 130 210 160 203 195 Z" fill="url(#petalSetosa)"/>
+  <path d="M190 198 C175 168 165 140 170 130 C180 145 190 170 194 198 Z" fill="url(#petalSetosa)" opacity="0.9"/>
+  <path d="M210 198 C225 168 235 140 230 130 C220 145 210 170 206 198 Z" fill="url(#petalSetosa)" opacity="0.9"/>
+
+  <!-- Veining Details -->
+  <path d="M200 240 L200 295 M196 255 L190 275 M204 255 L210 275" stroke="#312e81" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Center Core -->
+  <circle cx="200" cy="205" r="7" fill="#fbbf24"/>
+
+  <!-- Botanical Specimen Stamp -->
+  <rect x="70" y="348" width="260" height="28" rx="14" fill="#064e3b" opacity="0.9"/>
+  <text x="200" y="367" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#a7f3d0" text-anchor="middle" letter-spacing="1.5">IRIS SETOSA · SPECIMEN 01</text>
+</svg>

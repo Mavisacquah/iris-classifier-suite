@@ -18,6 +18,76 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 
+SPECIMEN_DETAILS: dict[str, dict[str, Any]] = {
+    "setosa": {
+        "species": "setosa",
+        "scientific_name": "Iris setosa",
+        "common_name": "Bristle-pointed Iris / Beachhead Iris",
+        "family": "Iridaceae",
+        "origin": "Arctic North America, Alaska, Siberia",
+        "description": "A hardy arctic iris characterized by distinctive dwarf petals reduced to bristles, broad blue-violet sepals with yellow bases, and low growing habit.",
+        "distinguishing_traits": [
+            "Petal length under 2.0 cm (diagnostic)",
+            "Petal width exceptionally narrow (0.1 - 0.6 cm)",
+            "Broad sepals relative to petal dimensions",
+            "Deep violet-blue veining with yellow crest"
+        ],
+        "morphology_averages": {
+            "sepal_length": 5.01,
+            "sepal_width": 3.43,
+            "petal_length": 1.46,
+            "petal_width": 0.25
+        },
+        "specimen_svg": "/specimens/setosa.svg",
+        "badge_color": "emerald"
+    },
+    "versicolor": {
+        "species": "versicolor",
+        "scientific_name": "Iris versicolor",
+        "common_name": "Harlequin Blueflag / Northern Blue Flag",
+        "family": "Iridaceae",
+        "origin": "Eastern North America freshwater wetlands & marshes",
+        "description": "An elegant wetland species featuring variegated petals displaying purple, violet, white, and yellow hues with intricate dark nectar veins.",
+        "distinguishing_traits": [
+            "Intermediate petal length (3.0 - 5.1 cm)",
+            "Petal width between 1.0 and 1.8 cm",
+            "Slender, branched stems with multiple flower heads",
+            "Variegated yellow-white petal base"
+        ],
+        "morphology_averages": {
+            "sepal_length": 5.94,
+            "sepal_width": 2.77,
+            "petal_length": 4.26,
+            "petal_width": 1.33
+        },
+        "specimen_svg": "/specimens/versicolor.svg",
+        "badge_color": "sky"
+    },
+    "virginica": {
+        "species": "virginica",
+        "scientific_name": "Iris virginica",
+        "common_name": "Virginia Iris / Southern Blue Flag",
+        "family": "Iridaceae",
+        "origin": "Coastal plains and deep swamps of Eastern & Southern US",
+        "description": "The largest and most majestic of the three Iris species, producing tall stems with expansive violet-purple petals and bright golden-yellow pubescent hairs.",
+        "distinguishing_traits": [
+            "Longest petals exceeding 4.5 cm (often > 5.5 cm)",
+            "Petal width exceeding 1.8 cm",
+            "Bright golden-yellow pubescent patch on sepal midrib",
+            "Tallest stature and robust seed pods"
+        ],
+        "morphology_averages": {
+            "sepal_length": 6.59,
+            "sepal_width": 2.97,
+            "petal_length": 5.55,
+            "petal_width": 2.03
+        },
+        "specimen_svg": "/specimens/virginica.svg",
+        "badge_color": "violet"
+    }
+}
+
+
 class IrisModelService:
     """Trains four classifiers once and exposes JSON-safe metrics/predictions."""
 
@@ -143,14 +213,16 @@ class IrisModelService:
         model = self.models[model_name]
         probabilities = model.predict_proba(row)[0]
         prediction = int(model.predict(row)[0])
+        predicted_name = self.species[prediction]
         return {
-            "predicted_species": self.species[prediction],
+            "predicted_species": predicted_name,
             "confidence": float(probabilities[prediction]),
             "probabilities": {
                 self.species[index]: float(probabilities[index])
                 for index in range(3)
             },
             "model_name": model_name,
+            "specimen": SPECIMEN_DETAILS.get(predicted_name.lower(), {}),
         }
 
 

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgVirginica" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4c1d95" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#312e81" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="petalVirg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="40%" stop-color="#6366f1"/>
+      <stop offset="80%" stop-color="#4338ca"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <linearGradient id="fallVirg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="40%" stop-color="#7c3aed"/>
+      <stop offset="85%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#2e1065"/>
+    </linearGradient>
+    <linearGradient id="pubescentGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="60%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="stemGradVirg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#052e16"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle / Plate -->
+  <circle cx="200" cy="200" r="185" fill="url(#bgVirginica)" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Robust Tall Stem & Sword Leaves -->
+  <path d="M200 365 C197 280 203 210 200 180" stroke="url(#stemGradVirg)" stroke-width="11" stroke-linecap="round"/>
+  <path d="M196 295 C145 255 110 170 100 110 C125 160 168 220 196 260" fill="#15803d" opacity="0.85"/>
+  <path d="M204 315 C248 275 285 200 295 140 C280 190 248 245 204 280" fill="#166534" opacity="0.85"/>
+
+  <!-- Expansive, Broad Falls (Sepals > 6.5cm avg) -->
+  <path d="M190 185 C120 200 45 250 40 315 C75 325 135 270 180 210 Z" fill="url(#fallVirg)" opacity="0.95"/>
+  <path d="M210 185 C280 200 355 250 360 315 C325 325 265 270 220 210 Z" fill="url(#fallVirg)" opacity="0.95"/>
+  <path d="M200 190 C150 250 140 325 200 360 C260 325 250 250 200 190 Z" fill="url(#fallVirg)"/>
+
+  <!-- Golden Pubescent Beard / Crest along Midrib -->
+  <path d="M200 205 C186 240 184 285 200 315 C216 285 214 240 200 205 Z" fill="url(#pubescentGold)"/>
+  <path d="M180 205 C140 225 95 260 70 285 C95 270 135 240 175 215 Z" fill="url(#pubescentGold)" opacity="0.9"/>
+  <path d="M220 205 C260 225 305 260 330 285 C305 270 265 240 225 215 Z" fill="url(#pubescentGold)" opacity="0.9"/>
+
+  <!-- Pubescent Texture Hairs (characteristic of Virginica) -->
+  <circle cx="200" cy="245" r="2.5" fill="#fef08a"/>
+  <circle cx="197" cy="255" r="2.5" fill="#fef08a"/>
+  <circle cx="203" cy="255" r="2.5" fill="#fef08a"/>
+  <circle cx="200" cy="265" r="2.5" fill="#fef08a"/>
+  <circle cx="196" cy="275" r="2.5" fill="#fef08a"/>
+  <circle cx="204" cy="275" r="2.5" fill="#fef08a"/>
+  <circle cx="200" cy="285" r="2.5" fill="#fef08a"/>
+
+  <!-- Majestic Tall Upright Standards (Petals > 5.5cm) -->
+  <path d="M195 175 C180 115 182 65 200 48 C218 65 220 115 205 175 Z" fill="url(#petalVirg)"/>
+  <path d="M185 180 C150 125 130 80 142 65 C162 88 178 135 190 180 Z" fill="url(#petalVirg)" opacity="0.92"/>
+  <path d="M215 180 C250 125 270 80 258 65 C238 88 222 135 210 180 Z" fill="url(#petalVirg)" opacity="0.92"/>
+
+  <!-- Center Heart -->
+  <circle cx="200" cy="182" r="9" fill="#f59e0b"/>
+
+  <!-- Botanical Specimen Stamp -->
+  <rect x="60" y="348" width="280" height="28" rx="14" fill="#2e1065" opacity="0.95"/>
+  <text x="200" y="367" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#e9d5ff" text-anchor="middle" letter-spacing="1.5">IRIS VIRGINICA · SPECIMEN 03</text>
+</svg>

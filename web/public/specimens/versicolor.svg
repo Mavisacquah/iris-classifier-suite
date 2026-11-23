@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgVersicolor" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0369a1" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="petalVersi" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="50%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#581c87"/>
+    </linearGradient>
+    <linearGradient id="fallVersi" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d8b4fe"/>
+      <stop offset="45%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#6b21a8"/>
+    </linearGradient>
+    <linearGradient id="variegation" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#eab308"/>
+    </linearGradient>
+    <linearGradient id="stemGradV" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#166534"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle / Plate -->
+  <circle cx="200" cy="200" r="185" fill="url(#bgVersicolor)" stroke="#0284c7" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Stem & Leaves -->
+  <path d="M200 360 C202 290 196 230 200 190" stroke="url(#stemGradV)" stroke-width="8" stroke-linecap="round"/>
+  <path d="M198 280 C160 250 130 190 120 140 C140 180 175 230 198 250" fill="#166534" opacity="0.85"/>
+  <path d="M202 300 C235 270 270 220 280 170 C265 210 235 250 202 275" fill="#14532d" opacity="0.85"/>
+
+  <!-- Slender, Arching Falls (Sepals) -->
+  <path d="M192 195 C140 215 70 260 65 310 C90 315 140 270 182 215 Z" fill="url(#fallVersi)" opacity="0.95"/>
+  <path d="M208 195 C260 215 330 260 335 310 C310 315 260 270 218 215 Z" fill="url(#fallVersi)" opacity="0.95"/>
+  <path d="M200 200 C165 255 155 315 200 350 C245 315 235 255 200 200 Z" fill="url(#fallVersi)"/>
+
+  <!-- Variegated White/Yellow Throat Patch -->
+  <path d="M200 210 C185 245 180 280 200 310 C220 280 215 245 200 210 Z" fill="url(#variegation)"/>
+  <path d="M182 215 C150 235 115 265 95 285 C115 275 145 250 180 225 Z" fill="url(#variegation)" opacity="0.9"/>
+  <path d="M218 215 C250 235 285 265 305 285 C285 275 255 250 220 225 Z" fill="url(#variegation)" opacity="0.9"/>
+
+  <!-- Intricate Dark Purple Veining (Harlequin effect) -->
+  <path d="M200 220 L200 300 M192 240 L185 270 M208 240 L215 270 M195 265 L188 290 M205 265 L212 290" stroke="#3b0764" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M165 235 L120 270 M235 235 L280 270" stroke="#3b0764" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Intermediate Upright Standards (Petals ~4.3cm) -->
+  <path d="M195 185 C185 135 188 95 200 80 C212 95 215 135 205 185 Z" fill="url(#petalVersi)"/>
+  <path d="M188 190 C165 145 150 110 160 95 C175 115 185 150 192 190 Z" fill="url(#petalVersi)" opacity="0.92"/>
+  <path d="M212 190 C235 145 250 110 240 95 C225 115 215 150 208 190 Z" fill="url(#petalVersi)" opacity="0.92"/>
+
+  <!-- Center Crest -->
+  <circle cx="200" cy="195" r="8" fill="#facc15"/>
+
+  <!-- Botanical Specimen Stamp -->
+  <rect x="55" y="348" width="290" height="28" rx="14" fill="#0c4a6e" opacity="0.9"/>
+  <text x="200" y="367" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#bae6fd" text-anchor="middle" letter-spacing="1.5">IRIS VERSICOLOR · SPECIMEN 02</text>
+</svg>
