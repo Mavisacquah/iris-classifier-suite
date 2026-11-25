@@ -18,6 +18,10 @@ import {
   Info,
   Layers,
   Sparkles,
+  Share2,
+  Copy,
+  PlusSquare,
+  ArrowDown,
 } from "lucide-react";
 import {
   FALLBACK_DATASET_SUMMARY,
@@ -62,22 +66,26 @@ export default function Home() {
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [platform, setPlatform] = useState<"ios" | "android" | "windows" | "other">("other");
   const [isInstalled, setIsInstalled] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [showIosBanner, setShowIosBanner] = useState(true);
 
   // Register Service Worker & handle PWA events
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     // Detect standalone mode (already installed)
-    if (
+    const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as any).standalone === true
-    ) {
-      setIsInstalled(true);
-    }
+      (window.navigator as any).standalone === true;
+    setIsInstalled(isStandalone);
 
-    // Detect user platform
+    // Detect user platform (iPhone, iPad, iPod, or iPadOS desktop UA)
     const ua = window.navigator.userAgent.toLowerCase();
-    if (/iphone|ipad|ipod/.test(ua)) {
+    const isIos =
+      /iphone|ipad|ipod/.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    if (isIos) {
       setPlatform("ios");
     } else if (/android/.test(ua)) {
       setPlatform("android");
@@ -108,6 +116,14 @@ export default function Home() {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
     };
   }, []);
+
+  function handleCopyLink() {
+    if (typeof window !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText("https://iris-classifier-suite-chi.vercel.app/");
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
+  }
 
   // Fetch metrics if available
   useEffect(() => {
@@ -233,8 +249,17 @@ export default function Home() {
               }}
               className="flex items-center gap-2 rounded-full bg-violet-950 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-violet-900 active:scale-95"
             >
-              <Download size={14} />
-              Install App (iOS, Android, Windows)
+              {platform === "ios" ? (
+                <>
+                  <Smartphone size={14} className="text-violet-300" />
+                  Install on iPhone (Home Screen)
+                </>
+              ) : (
+                <>
+                  <Download size={14} />
+                  Install App (iOS, Android, Windows)
+                </>
+              )}
             </button>
           )}
 
@@ -829,7 +854,7 @@ export default function Home() {
               <div
                 className={`rounded-xl border p-4 transition ${
                   platform === "ios"
-                    ? "border-violet-400 bg-violet-50/60 ring-2 ring-violet-200"
+                    ? "border-violet-500 bg-violet-50/70 ring-2 ring-violet-300"
                     : "border-slate-200 bg-slate-50/50"
                 }`}
               >
@@ -837,35 +862,76 @@ export default function Home() {
                   <Smartphone size={18} className="text-violet-800" />
                   <span>Apple iOS (iPhone & iPad)</span>
                   {platform === "ios" && (
-                    <span className="ml-auto rounded-full bg-violet-200 px-2 py-0.5 text-[10px] text-violet-900">
-                      Detected
+                    <span className="ml-auto rounded-full bg-violet-200 px-2.5 py-0.5 text-[10px] font-bold text-violet-900">
+                      Detected Device
                     </span>
                   )}
                 </div>
-                <ol className="mt-2.5 space-y-1.5 text-xs text-slate-600">
-                  <li className="flex items-start gap-2">
-                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[10px] font-bold text-white">
+
+                {/* Important iOS Notice */}
+                <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50/80 p-3 text-xs text-amber-900">
+                  <p className="font-semibold">⚠️ Why is there no direct &ldquo;Download&rdquo; file?</p>
+                  <p className="mt-1 text-[11px] leading-4 text-amber-800">
+                    Apple restricts iPhones from downloading installer files directly from websites. Instead, Apple provides the official <strong>&ldquo;Add to Home Screen&rdquo;</strong> feature, which installs the app right onto your iPhone with its own icon, offline functionality, and fullscreen view.
+                  </p>
+                </div>
+
+                {/* Safari Requirement & Copy Link */}
+                <div className="mt-3 flex items-center justify-between rounded-lg bg-white p-2.5 border border-slate-200 text-xs">
+                  <span className="text-slate-600 font-medium">Must be opened in <strong>Apple Safari</strong></span>
+                  <button
+                    onClick={handleCopyLink}
+                    className="flex items-center gap-1.5 rounded-md bg-violet-950 px-2.5 py-1 text-xs font-semibold text-white shadow-sm hover:bg-violet-900 active:scale-95"
+                  >
+                    <Copy size={12} />
+                    {copiedLink ? "Link Copied!" : "Copy Link"}
+                  </button>
+                </div>
+
+                <ol className="mt-3 space-y-2.5 text-xs text-slate-700">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[11px] font-bold text-white">
                       1
                     </span>
-                    <span>
-                      Open this URL in <strong>Safari</strong> on your iPhone or iPad.
-                    </span>
+                    <div>
+                      <strong>Open Safari</strong> on your iPhone and visit:
+                      <div className="mt-0.5 font-mono text-[11px] text-violet-900">
+                        https://iris-classifier-suite-chi.vercel.app/
+                      </div>
+                      <span className="text-[10px] text-slate-500">
+                        (If you opened this from WhatsApp, Instagram, or Chrome, copy the link and open Safari).
+                      </span>
+                    </div>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[10px] font-bold text-white">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[11px] font-bold text-white">
                       2
                     </span>
-                    <span>
-                      Tap the <strong>Share</strong> button at the bottom of the screen (the square with an arrow pointing up).
-                    </span>
+                    <div>
+                      Tap the <strong>Share button</strong> in Safari&apos;s bottom toolbar:
+                      <div className="mt-1 inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-800">
+                        <Share2 size={13} className="text-violet-700" /> Square with upward arrow [⎋]
+                      </div>
+                    </div>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[10px] font-bold text-white">
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[11px] font-bold text-white">
                       3
                     </span>
-                    <span>
-                      Scroll down and tap <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.
+                    <div>
+                      Scroll down the Share menu and tap:
+                      <div className="mt-1 inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-800">
+                        <PlusSquare size={13} className="text-violet-700" /> Add to Home Screen
+                      </div>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-900 text-[11px] font-bold text-white">
+                      4
                     </span>
+                    <div>
+                      Tap <strong>&ldquo;Add&rdquo;</strong> in the top right corner. The <strong>Iris Lab</strong> icon will instantly appear on your iPhone screen!
+                    </div>
                   </li>
                 </ol>
               </div>
@@ -975,6 +1041,50 @@ export default function Home() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Floating iPhone Install Banner */}
+      {platform === "ios" && !isInstalled && showIosBanner && (
+        <aside
+          aria-label="iPhone installation guide"
+          className="fixed bottom-4 left-4 right-4 z-40 mx-auto max-w-md rounded-2xl border border-violet-300 bg-white/95 p-4 shadow-2xl backdrop-blur-md transition-all"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-950 text-white shadow-sm">
+                <Flower2 size={22} />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">Install Iris Lab on iPhone</p>
+                <p className="mt-0.5 text-[11px] leading-4 text-slate-600">
+                  Tap Safari&apos;s <span className="font-semibold text-violet-900">Share [⎋]</span> button below, then select <span className="font-semibold text-violet-900">&ldquo;Add to Home Screen&rdquo;</span>.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowIosBanner(false)}
+              className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              aria-label="Dismiss banner"
+            >
+              <X size={16} />
+            </button>
+          </div>
+          <div className="mt-2.5 flex items-center justify-between border-t border-slate-100 pt-2">
+            <button
+              onClick={() => setShowInstallModal(true)}
+              className="text-xs font-bold text-violet-950 underline hover:text-violet-800"
+            >
+              View detailed steps →
+            </button>
+            <button
+              onClick={handleCopyLink}
+              className="flex items-center gap-1 rounded-md bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-200"
+            >
+              <Copy size={11} />
+              {copiedLink ? "Copied!" : "Copy Safari Link"}
+            </button>
+          </div>
+        </aside>
       )}
 
       {/* Footer */}
